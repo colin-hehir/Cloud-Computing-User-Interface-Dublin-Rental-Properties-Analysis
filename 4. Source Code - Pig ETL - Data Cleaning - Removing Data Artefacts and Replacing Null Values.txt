@@ -1,0 +1,18 @@
+grunt> Daft_Dublin_Rent_Sept_2020_Furnished_Unfurnished_Populate_Unspecified_Values = FOREACH Daft_Dublin_Rent_Sept_2020_Column_Filter GENERATE Price,Address,Bedroom,Bathroom,(Furnish_Unfurnished == 'Furnished or unfurnished' ? 'Unspecified' : Furnish_Unfurnished) AS Furnish_or_Unfurnished,Property_Type,Longitude,Latitude;
+
+grunt> Daft_Dublin_Rent_Sept_2020_Furnished_Unfurnished_Populate_Null_Values = FOREACH Daft_Dublin_Rent_Sept_2020_Furnished_Unfurnished_Populate_Unspecified_Values GENERATE Price,Address,Bedroom,Bathroom,(Furnish_or_Unfurnished == '' ? 'Unspecified' : Furnish_or_Unfurnished) AS Furnish_or_Unfurnished,Property_Type,Longitude,Latitude;
+
+grunt> Daft_Dublin_Rent_Sept_2020_Grouped = GROUP Daft_Dublin_Rent_Sept_2020_Furnished_Unfurnished_Populate_Null_Values BY Address;
+
+grunt> Daft_Dublin_Rent_Sept_2020_Remove_Duplicates = FOREACH Daft_Dublin_Rent_Sept_2020_Grouped {result = TOP(1, 0, $1);GENERATE FLATTEN(result);}
+
+grunt> Daft_Dublin_Rent_Sept_2020_Remove_No_Bedrooms = FILTER Daft_Dublin_Rent_Sept_2020_Remove_Duplicates BY Bedroom !=0;
+
+grunt> Daft_Dublin_Rent_Sept_2020_Remove_No_Bathrooms = FILTER Daft_Dublin_Rent_Sept_2020_Remove_No_Bedrooms BY Bathroom !=0;
+
+grunt> Daft_Dublin_Rent_Sept_2020_Remove_Longitude_Data_Artefacts = FILTER Daft_Dublin_Rent_Sept_2020_Remove_No_Bathrooms BY NOT (ENDSWITH(Longitude,',') OR ENDSWITH(Longitude,'"') OR ENDSWITH(Longitude,'sel') OR ENDSWITH(Longitude,'s'));
+
+grunt> Daft_Dublin_Rent_Sept_2020_Remove_Latitude_Data_Artefacts = FILTER Daft_Dublin_Rent_Sept_2020_Remove_Longitude_Data_Artefacts BY NOT (ENDSWITH(Latitude,',') OR ENDSWITH(Latitude,'"') OR ENDSWITH(Latitude,'sel') OR ENDSWITH(Latitude,'s'));
+
+grunt> Daft_Dublin_Rent_Sept_2020_Remove_Euro_Comma_Characters = FOREACH Daft_Dublin_Rent_Sept_2020_Remove_Latitude_Data_Artefacts GENERATE REPLACE(REPLACE(Price,'(€)',''),'(,)','') AS Price,Address,Bedroom,Bathroom,Furnish_or_Unfurnished,Property_Type,Longitude,Latitude;
+

@@ -1,0 +1,5 @@
+grunt> STORE Daft_Dublin_Rent_Sept_2020_Final INTO '/Daft_Dublin_Rent_Sept_2020_Final_Dataset' USING org.apache.pig.piggybank.storage.CSVExcelStorage('|','NO_MULTILINE','NOCHANGE','SKIP_OUTPUT_HEADER');
+
+$ hadoop fs -ls /Daft_Dublin_Rent_Sept_2020_Final_Dataset
+
+#Saved as: /Daft_Dublin_Rent_Sept_2020_Final_Dataset/part-m-00000

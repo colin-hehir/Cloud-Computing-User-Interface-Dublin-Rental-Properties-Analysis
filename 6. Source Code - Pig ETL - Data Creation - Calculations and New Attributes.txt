@@ -1,0 +1,9 @@
+grunt> Daft_Dublin_Rent_Sept_2020_Cleaned = LOAD '/DataCleaning/part-m-00000' USING org.apache.pig.piggybank.storage.CSVExcelStorage() AS(Value:int,Week_Month:chararray,Price:chararray,Area:chararray,Address:chararray,Bedroom:double,Bathroom:double,Furnish_or_Unfurnished:chararray,Property_Type:chararray,Longitude:bigdecimal,Latitude:bigdecimal);
+
+grunt> Daft_Dublin_Rent_Sept_2020_Price_Per_Month_Column = FOREACH Daft_Dublin_Rent_Sept_2020_Cleaned GENERATE (Week_Month == 'Per week' ? Value*4:Value) AS Price_Per_Month,Value,Week_Month,Price,Area,Address,Bedroom,Bathroom,Furnish_or_Unfurnished,Property_Type,Longitude,Latitude;
+
+grunt> Daft_Dublin_Rent_Sept_2020_Price_Per_Month_Per_Bed_Column = FOREACH Daft_Dublin_Rent_Sept_2020_Price_Per_Month_Column GENERATE Price_Per_Month,(Price_Per_Month/Bedroom) AS Price_Per_Month_Per_Bed,Address,Area,Bedroom,Bathroom,Furnish_or_Unfurnished,Property_Type,Longitude,Latitude;
+
+grunt> Daft_Dublin_Rent_Sept_2020_Bathroom_To_Bedroom_Ratio_Column = FOREACH Daft_Dublin_Rent_Sept_2020_Price_Per_Month_Per_Bed_Column GENERATE Price_Per_Month,Price_Per_Month_Per_Bed,(Bathroom/Bedroom) As Bathroom_To_Bedroom_Ratio,Address,Area,Bedroom,Bathroom,Furnish_or_Unfurnished,Property_Type,Longitude,Latitude;
+
+grunt> Daft_Dublin_Rent_Sept_2020_Final = FOREACH Daft_Dublin_Rent_Sept_2020_Bathroom_To_Bedroom_Ratio_Column GENERATE Price_Per_Month,Price_Per_Month_Per_Bed,Bathroom_To_Bedroom_Ratio,Address,Area,Bedroom,Bathroom,Furnish_or_Unfurnished,Property_Type,Longitude,Latitude;

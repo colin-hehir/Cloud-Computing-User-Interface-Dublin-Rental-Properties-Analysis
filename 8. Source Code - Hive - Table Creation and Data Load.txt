@@ -1,0 +1,7 @@
+$ hive
+
+hive> CREATE TABLE DUBLIN_RENTAL_PROPERTIES (Price_Per_Month decimal(38,2),Price_Per_Month_Per_Bed decimal(38,2),Bathroom_To_Bedroom_Ratio decimal(38,2),Address string,Area string,Bedroom int,Bathroom int,Furnish_or_Unfurnished string,Property_Type string,Longitude decimal(38,6),Latitude decimal(38,6)) ROW FORMAT DELIMITED FIELDS TERMINATED BY '|';
+
+hive> LOAD DATA INPATH '/Daft_Dublin_Rent_Sept_2020_Final_Dataset/part-m-00000' INTO TABLE DUBLIN_RENTAL_PROPERTIES;
+
+

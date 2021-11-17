@@ -1,0 +1,9 @@
+$ hadoop fs -ls /
+
+$ hadoop fs -mkdir /Group_27_Data_Acquisition
+
+#Upload file: Settings>Upload file
+
+$ hadoop fs -put /home/colin_hehir3/Daft_Dublin_Rent_Sept_2020_Dataset.csv /Group_27_Data_Acquisition
+
+$ hadoop fs -ls /Group_27_Data_Acquisition

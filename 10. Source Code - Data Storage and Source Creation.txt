@@ -1,0 +1,3 @@
+gsutil du -s gs://ca675_dublin_rental/
+ 
+gsutil cp Daft_Dublin_Rent_Sept_2020_Final_Dataset.csv gs://ca675_dublin_rental/

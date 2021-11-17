@@ -1,0 +1,10 @@
+grunt> Daft_Dublin_Rent_Sept_2020_Split_Price_Column = FOREACH Daft_Dublin_Rent_Sept_2020_Remove_Euro_Comma_Characters GENERATE REPLACE(REPLACE(Price,' Per week',''),' Per month','') As Value,Price,Address,Bedroom,Bathroom,Furnish_or_Unfurnished,Property_Type,Longitude,Latitude;
+
+grunt> Daft_Dublin_Rent_Sept_2020_Split_Week_Or_Month_Column = FOREACH Daft_Dublin_Rent_Sept_2020_Split_Price_Column GENERATE Value,REPLACE(REPLACE(Price,'.*Per week','Per week'),'.*Per month','Per month') As Week_Month,Price,Address,Bedroom,Bathroom,Furnish_or_Unfurnished,Property_Type,Longitude,Latitude;
+
+grunt> Daft_Dublin_Rent_Sept_2020_Area_Column = FOREACH Daft_Dublin_Rent_Sept_2020_Split_Week_Or_Month_Column GENERATE Value,Week_Month,Price,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(Address,'.*South Co. Dublin','South Co. Dublin'),'.*South Dublin City','South Dublin City'),'.*Dublin City Centre','Dublin City Centre'),'.*North Co. Dublin','North Co. Dublin'),'.*North Dublin City','North Dublin City'),'.*West Co. Dublin','West Co. Dublin'),'.*Co. Dublin','Co. Dublin') As Area,Address,Bedroom,Bathroom,Furnish_or_Unfurnished,Property_Type,Longitude,Latitude;
+
+grunt> STORE Daft_Dublin_Rent_Sept_2020_Area_Column INTO '/DataCleaning' USING org.apache.pig.piggybank.storage.CSVExcelStorage();
+
+# File saved as: /DataCleaning/part-m-00000
+

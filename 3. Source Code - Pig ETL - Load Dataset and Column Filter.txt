@@ -1,0 +1,13 @@
+$ pig
+
+grunt> Daft_Dublin_Rent_Sept_2020 = LOAD '/Group_27_Data_Acquisition/Daft_Dublin_Rent_Sept_2020_Dataset.csv' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',','YES_MULTILINE','NOCHANGE','SKIP_INPUT_HEADER') AS(Price:chararray, Address:chararray, Bedroom:int, Bathroom:int, Furnish_Unfurnished:chararray, Description:chararray, Property_Type:chararray, ID:int, Longitude:chararray, Latitude:chararray);
+
+grunt> TestData_Daft_Dublin_Rent_Sept_2020 = LIMIT Daft_Dublin_Rent_Sept_2020 5;
+
+grunt> DUMP TestData_Daft_Dublin_Rent_Sept_2020
+
+grunt> Daft_Dublin_Rent_Sept_2020_Column_Filter = FOREACH Daft_Dublin_Rent_Sept_2020 GENERATE Price,Address,Bedroom,Bathroom,Furnish_Unfurnished,Property_Type,Longitude,Latitude;
+
+grunt> TestData_Daft_Dublin_Rent_Sept_2020_Column_Filter = LIMIT Daft_Dublin_Rent_Sept_2020_Column_Filter 5;
+
+grunt> DUMP TestData_Daft_Dublin_Rent_Sept_2020_Column_Filter

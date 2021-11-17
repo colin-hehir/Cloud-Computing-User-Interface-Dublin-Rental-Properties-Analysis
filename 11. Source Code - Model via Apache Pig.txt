@@ -1,0 +1,17 @@
+dataset = LOAD 'DAFT.csv' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',','YES_MULTILINE','NOCHANGE','SKIP_INPUT_HEADER') AS(Price:bigdecimal, PPR:chararray, BtB:int, furn:int, Location:chararray, Bedroom:int, Bathroom:int, ID:int, Type:chararray, Longitude:bigdecimal, Latitude:bigdecimal);
+
+dataset_n = FOREACH dataset GENERATE $0, $1, $5, $6, $9*-1, $10;
+property = LOAD 'Property.csv' using PigStorage(',') AS (beds:int , baths:int , long:bigdecimal, lat:bigdecimal);
+prop_bed = FILTER dataset BY Bedroom == property.beds;
+prop_bed_bath = FILTER prop_bed BY Bathroom == property.baths;
+prop_n = FOREACH property GENERATE $0, $1, $2*-1, $3;
+prop_min = FOREACH prop_n GENERATE $0, $1, $2-0.01, $3-0.01;
+prop_max = FOREACH prop_n GENERATE $0, $1, $2+0.01, $3+0.01;
+prop_f1 = FILTER prop_bed_bath BY Longitude > prop_min.$2;
+prop_f2 = FILTER prop_f1 BY Latitude > prop_min.$3;
+prop_f3 = FILTER prop_f2 BY Longitude < prop_max.$2;
+prop_f4 = FILTER prop_f3 BY Latitude < prop_max.$3;
+find_price = GROUP prop_f4 BY $2;
+price_1 = FOREACH find_price GENERATE group, AVG(prop_f4.$0);
+price = FOREACH price_1 GENERATE $1;
+DUMP price
