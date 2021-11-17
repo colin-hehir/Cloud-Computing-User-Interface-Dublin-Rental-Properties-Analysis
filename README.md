@@ -2,10 +2,10 @@
 
 Contributers: Aisling Keating, Anna Field, Colin Hehir, Ellen Jaye Woods, Niamh Eilis Feeney and Thomas Feeney.
 
-Initital Dataset: https://www.kaggle.com/d17129765/predicting-dublin-rental-daftie
+Initial Dataset: https://www.kaggle.com/d17129765/predicting-dublin-rental-daftie
 
-Interactive Dashboard:
+Interactive Dashboard and Application:
 https://public.tableau.com/app/profile/aisling.keating/viz/CA675Group27DublinPropertyFinder/Mode
 l?publish=yes
 
-YouTube Link: https://youtu.be/VlMM8EB4naM
+YouTube Walkthrough Link: https://youtu.be/VlMM8EB4naM
